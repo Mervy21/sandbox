@@ -60,72 +60,87 @@ class _FormulaireState extends State<Formulaire> {
     return Scaffold(
         backgroundColor: Colors.grey[200],
         body: Center(
-            child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    elevation: 8,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formkey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Formulaire',
-                style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.black
-                ),
-              ),
-              SizedBox(height: 20,),
-              TextFormField(
-                key: const Key('nomField'),
-                decoration: InputDecoration(labelText: 'nom'),
-                validator: FormValidators.validateNom,
-                onSaved: (value) => nom = value!,
-              ),
-              TextFormField(
-                key: const Key('prenomField'),
-                decoration: InputDecoration(labelText: 'prenom'),
-                  validator: FormValidators.validatePrenom,
-                onSaved: (value) => prenom = value!,
+          child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+                elevation: 8,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Form(
+                    key: _formkey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Formulaire',
+                          style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.black
+                          ),
+                        ),
+                        SizedBox(height: 20,),
+                        TextFormField(
+                          key: const Key('nomField'),
+                          decoration: InputDecoration(labelText: 'nom'),
+                          validator: FormValidators.validateNom,
+                          onSaved: (value) => nom = value!,
+                        ),
+                        TextFormField(
+                          key: const Key('prenomField'),
+                          decoration: InputDecoration(labelText: 'prenom'),
+                          validator: FormValidators.validatePrenom,
+                          onSaved: (value) => prenom = value!,
 
-              ),
-              TextFormField(
-                key: const Key('emailField'),
-                decoration: InputDecoration(labelText: 'email'),
-                keyboardType: TextInputType.emailAddress,
-                validator: FormValidators.validateEmail,
-                onSaved: (value) => email = value!,
-              ),
-              TextFormField(
-                key: const Key('motdepasseField'),
-                decoration:  const InputDecoration(labelText: 'motdepasse'),
-                obscureText: true,
-                validator: FormValidators.validateMotDePasse,
-                onSaved: (value) => motdepasse = value!,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                key: const Key('submitbutton'),
-                onPressed: _submitForm,
-                child: Text("Soumis"),
-              ),
-              if( successMessage.isNotEmpty)
-                Text(
-                  successMessage,
-                  style: TextStyle(color: Colors.green),
-                )
-              ,
-            ],
-          ),
-        ),
-      ),
-                )),
+                        ),
+                        TextFormField(
+                          key: const Key('emailField'),
+                          decoration: InputDecoration(labelText: 'email'),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: FormValidators.validateEmail,
+                          onSaved: (value) => email = value!,
+                        ),
+                        TextFormField(
+                          key: const Key('motdepasseField'),
+                          decoration:  const InputDecoration(labelText: 'motdepasse'),
+                          obscureText: true,
+                          validator: FormValidators.validateMotDePasse,
+                          onSaved: (value) => motdepasse = value!,
+                        ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          key: const Key('submitbutton'),
+                            onPressed: (){
+                        if (_formkey.currentState!.validate()) {
+                                _formkey.currentState!.save();
+                                showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      AlertDialog(
+                                        title: Text('Soumis'),
+                                        content: Text(
+                                            'Nom: $nom\nPrenom: $prenom\nEmail: $email\nMotdepasse: $motdepasse'),
+                                      ),
+                                );
+                              }
+                            },
+                          child: Text("Soumis")),
+                            if (successMessage.isNotEmpty)
+                      Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Text(
+                    successMessage,
+                    key: Key('success_message'),
+                    style: TextStyle(color: Colors.green, fontSize: 16),
+                  ),
+                ),
+                      ],
+                    ),
+                  ),
+                ),
+              )),
         )
     );
 
